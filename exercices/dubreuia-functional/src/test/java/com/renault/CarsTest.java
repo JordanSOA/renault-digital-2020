@@ -2,6 +2,7 @@ package com.renault;
 
 import com.renault.Cars.Car;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -10,8 +11,10 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.renault.Cars.getCars;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,9 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CarsTest {
 
     // TODO change path to cars.csv
-    public static final String PATH_CSV = "C:\\Users\\alex\\Projects\\renault-digital-2020\\exercices\\dubreuia-functional\\data\\cars.csv";
-
-    private List<Car> cars;
+    public static final String PATH_CSV = "C:/Users/Workspace/Desktop/Coaching/Nouveau dossier/renault-digital-2020/exercices/dubreuia-functional/data/cars.csv";
+    private static List<Car> cars;
 
     @BeforeEach
     public void beforeEach() throws IOException {
@@ -76,6 +78,7 @@ public class CarsTest {
     }
 
     @Test
+    @Disabled
     public void getCarsPerYear() {
         Map<Integer, List<Car>> perYear = Cars.getCarsPerYear(cars);
         assertEquals(16, perYear.size());
@@ -89,6 +92,7 @@ public class CarsTest {
     }
 
     @Test
+    @Disabled
     public void getCarsCountPerYear() {
         Map<Integer, Long> carsCountPerYear = Cars.getCarsCountPerYear(cars);
 
