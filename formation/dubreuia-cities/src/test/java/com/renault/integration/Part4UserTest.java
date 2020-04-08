@@ -1,7 +1,6 @@
 package com.renault.integration;
 
 import com.renault.CitiesApplication;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;

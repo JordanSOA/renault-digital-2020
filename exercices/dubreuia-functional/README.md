@@ -53,10 +53,22 @@ Nous allons appliquer ces notions à l'application "Cities", en transformant le 
     - Supprimer la boucle : `com.renault.controllers.LanguageController.getLanguages`
     - Supprimer la boucle : `com.renault.controllers.RegionController.getRegionsForCountry`
     - Supprimer la boucle : `com.renault.services.CityServiceImpl.deleteCity`
-    - Supprimer la condition : `com.renault.services.RegionServiceImpl.saveCountryRegion`
-    - Supprimer la condition : `com.renault.services.RegionServiceImpl.saveCountryRegionWithTransaction`
     - Supprimer la boucle : `com.renault.services.UserServiceImpl.unfollowCityAndSave`
+    - La langue d'un country deviens optionnelle, ajouter une méthode `getLanguageOptional`
+        - Adapter le code pour utiliser cette méthode, en utilisant FR comme langue par défaut
+        - Adapter : `com.renault.controllers.CountryController.getCountry`
+        - Adapter : `com.renault.controllers.CountryController.getCountries`
+    - Dans `CityService`, implémenter avec un stream une recherche par nom :
+        - Écrire la méthode `List<City> findCityNameContains(String name)`
+        - Écrire la méthode `Optional<City> findFirstCityNameContains(String name)`
 
 ## Perfectionnement
 
-- Remplir les commentaires `TODO` dans [Cars.java](./src/main/java/Cars.java)
+- Java
+    - Remplir les commentaires `TODO` dans [Cars.java](./src/main/java/com/renault/Cars.java)
+    - Exécuter les tests dans [CarsTest.java](./src/test/java/com/renault/CarsTest.java)
+- JavaScript
+    - Exécuter `npm install`
+    - Remplir les commentaires `TODO` dans [cars.js](./src/main/javascript/cars/cars.js)
+    - Exécuter `node cars.js` dans le dossier "src/main/javascript/cars"
+    - Vérifier la sortie
