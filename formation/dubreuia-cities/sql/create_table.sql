@@ -20,3 +20,4 @@ CREATE TABLE city
     region_id   INTEGER NOT NULL,
     FOREIGN KEY (region_id) REFERENCES region(id)
 );
+

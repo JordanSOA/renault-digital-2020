@@ -1,13 +1,9 @@
 package com.renault.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "city")
@@ -17,12 +13,15 @@ public class City {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column
+    @Column(nullable = false, length = 512)
     private String name;
 
     @ManyToOne
     @JoinColumn(name = "region_id")
     private Region region;
+
+    @ManyToMany(mappedBy = "followedCities", fetch = FetchType.LAZY)
+    private List<User> users;
 
     public City() {
     }
@@ -42,6 +41,14 @@ public class City {
 
     public String getName() {
         return name;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     public void setName(String name) {

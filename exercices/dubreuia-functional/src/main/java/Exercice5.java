@@ -25,8 +25,10 @@ public class Exercice5 {
     }
 
     public static Optional<Integer> functional(List<Integer> elements) {
-        // TODO
-        return null;
+        return elements.stream()
+            .filter( e -> e % 5 == 0)
+            .map( e -> e * 10)
+            .findFirst();
     }
 
     public static void main(String[] args) {

@@ -58,7 +58,6 @@ public class Part2RegionTest extends TestCitiesApplication {
     }
 
     @Test
-    @Disabled("TODO remove when part is ready")
     public void should_POST_root_add_new_region() {
         int franceId = getCountryIdForName("France").orElseThrow();
         JsonObject alpes = Json.createObjectBuilder().add("name", "Alpes").build();

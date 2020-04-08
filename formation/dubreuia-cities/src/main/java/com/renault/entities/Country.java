@@ -11,7 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Entity
 @Table(name = "country")
@@ -21,7 +24,7 @@ public class Country {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column
+    @Column(length = 16)
     @Enumerated(EnumType.STRING)
     private Language language;
 
@@ -37,8 +40,8 @@ public class Country {
     }
 
     public Country(Language language, String name) {
-        this.language = language;
         this.name = name;
+        this.language = language;
     }
 
     public int getId() {
@@ -47,6 +50,10 @@ public class Country {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Optional<Language> getLanguageOptional(){
+        return Optional.ofNullable(language);
     }
 
     public Language getLanguage() {

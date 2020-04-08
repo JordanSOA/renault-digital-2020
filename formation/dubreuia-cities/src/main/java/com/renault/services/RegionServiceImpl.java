@@ -35,6 +35,12 @@ public class RegionServiceImpl implements RegionService {
 
     @Override
     @Transactional
+    public void saveRegion(Region region) {
+        regionRepository.save(region);
+    }
+
+    @Override
+    @Transactional
     public void saveCountryRegionWithTransaction(Country country, Region region) {
         countryRepository.save(country);
         if (region.getName().equals("Mordor")) {

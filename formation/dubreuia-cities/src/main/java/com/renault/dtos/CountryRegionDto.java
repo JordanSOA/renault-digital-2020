@@ -1,10 +1,17 @@
 package com.renault.dtos;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 // { country: { "name", ...
 public class CountryRegionDto {
 
+    @NotNull
+    @Valid
     private CountryDto country;
 
+    @NotNull
+    @Valid
     private RegionDto region;
 
     public CountryDto getCountry() {

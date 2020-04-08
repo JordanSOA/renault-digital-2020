@@ -98,7 +98,7 @@ public class Part1CountryTest extends TestCitiesApplication {
                 .add("name", "United France")
                 .add("language", "English")
                 .build();
-        put("country", updatedFrance);
+        put("country/", updatedFrance);
 
         List<String> countryNames = getCountryNames();
         assertEquals(3, countryNames.size());

@@ -1,9 +1,15 @@
 package com.renault.dtos;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
+
 public class UserDto {
 
     private int id;
 
+    @NotNull
+    @Length(min = 3, max = 512, message = "Not proper length")
     private int name;
 
     public UserDto() {

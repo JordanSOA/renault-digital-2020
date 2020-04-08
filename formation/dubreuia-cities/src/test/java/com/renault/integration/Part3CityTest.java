@@ -12,8 +12,7 @@ import javax.json.JsonObject;
 import java.util.List;
 
 import static java.lang.String.format;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @ExtendWith(SpringExtension.class)
@@ -21,7 +20,6 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 public class Part3CityTest extends TestCitiesApplication {
 
     @Test
-    @Disabled("TODO remove when part is ready")
     public void should_POST_region_add_new_region() {
         JsonObject ukMidwest = Json.createObjectBuilder()
                 .add("countryName", "United Kingdom")
@@ -29,7 +27,7 @@ public class Part3CityTest extends TestCitiesApplication {
                 .add("regionName", "Midwest")
                 .add("cityName", "London")
                 .build();
-        post("country/region/city", ukMidwest);
+        post("country/region/createCountryRegionCity", ukMidwest);
 
         List<String> countryNames = getCountryNames();
         assertEquals(4, countryNames.size());
@@ -45,7 +43,6 @@ public class Part3CityTest extends TestCitiesApplication {
     }
 
     @Test
-    @Disabled("TODO remove when part is ready")
     public void should_PUT_city_modify_existing_city() {
         int montrealId = getCityIdForName("Montréal").orElseThrow();
         JsonObject updatedMontrel = Json.createObjectBuilder()
@@ -59,4 +56,17 @@ public class Part3CityTest extends TestCitiesApplication {
         assertTrue(cityNames.contains("Super Montréal"));
     }
 
+    @Test
+    public void should_DELETE_city_should_remove_city_even_if_followed() {
+        int parisId = getCityIdForName("Paris").orElseThrow();
+        delete(format("country/region/city/%s", parisId));
+
+        List<String> cityNames = getCityNames();
+        assertEquals(3, cityNames.size());
+        assertFalse(cityNames.contains("Paris"));
+
+        List<String> userNames = getUserNames();
+        assertEquals(1, userNames.size());
+        assertTrue(userNames.contains("Alex"));
+    }
 }

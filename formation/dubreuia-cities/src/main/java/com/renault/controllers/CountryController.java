@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @CrossOrigin
 @RestController
@@ -28,21 +31,20 @@ public class CountryController {
 
     @GetMapping("")
     public List<CountryDto> getCountries() {
-        List<CountryDto> coutries = new ArrayList<>();
-        for (Country country : countryService.getCountries()) {
-            coutries.add(new CountryDto(country.getId(), country.getLanguage().getName(), country.getName()));
-        }
-        return coutries;
+        return countryService.getCountries().stream()
+            .map(country -> {
+                return new CountryDto(country.getId(), country.getLanguageOptional().orElse(Language.FR).getName(), country.getName());})
+            .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
     public CountryDto getCountry(@PathVariable("id") int id) {
         Country country = countryService.getCountry(id).orElseThrow();
-        return new CountryDto(country.getId(), country.getLanguage().getName(), country.getName());
+        return new CountryDto(country.getId(), country.getLanguageOptional().orElse(Language.FR).getName(), country.getName());
     }
 
     @PostMapping("")
-    public void createCountry(@RequestBody CountryDto countryDto) {
+    public void createCountry(@RequestBody  @Valid CountryDto countryDto) {
         Language language = Language.fromName(countryDto.getLanguage()).orElseThrow();
         countryService.saveCountry(new Country(language, countryDto.getName()));
     }
@@ -53,7 +55,7 @@ public class CountryController {
     }
 
     @PutMapping("")
-    public void updateCountry(@RequestBody CountryDto countryDto) {
+    public void updateCountry(@RequestBody @Valid CountryDto countryDto) {
         Country country = countryService.getCountry(countryDto.getId()).orElseThrow();
         country.setLanguage(Language.fromName(countryDto.getLanguage()).orElseThrow());
         country.setName(countryDto.getName());

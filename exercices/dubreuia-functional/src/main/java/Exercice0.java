@@ -1,4 +1,6 @@
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /*
  * Imprimer chacun des éléments de la liste sur sa propre ligne.
@@ -26,7 +28,7 @@ public class Exercice0 {
     }
 
     public static void functional(List<Integer> elements) {
-        // TODO
+        elements.stream().forEach(element -> System.out.println(element));
     }
 
     public static void main(String[] args) {

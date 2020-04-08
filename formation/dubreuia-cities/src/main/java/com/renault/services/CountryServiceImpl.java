@@ -14,6 +14,8 @@ public class CountryServiceImpl implements CountryService {
 
     @Autowired
     private CountryRepository countryRepository;
+    @Autowired
+    private CityService cityService;
 
     @Override
     public List<Country> getCountries() {
@@ -25,6 +27,10 @@ public class CountryServiceImpl implements CountryService {
         return countryRepository.findById(id);
     }
 
+    public Country getCountryByName(String name){
+        return countryRepository.findbyName(name);
+    }
+
     @Override
     @Transactional
     public void saveCountry(Country country) {
@@ -33,6 +39,12 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public void deleteCountry(int id) {
+        Country country = countryRepository.findById(id).orElseThrow();
+        country.getRegions().stream().forEach(region -> {
+            region.getCities().stream().forEach(city -> {
+                cityService.deleteCity(city);
+            });
+        });
         countryRepository.deleteById(id);
     }
 

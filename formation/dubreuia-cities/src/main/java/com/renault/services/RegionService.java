@@ -13,4 +13,6 @@ public interface RegionService {
 
     void saveCountryRegionWithTransaction(Country country, Region region);
 
+    void saveRegion(Region region);
+
 }

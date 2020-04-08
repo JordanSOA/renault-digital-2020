@@ -158,19 +158,19 @@ public abstract class TestCitiesApplication {
     }
 
     List<String> getUserNames() {
-        return getNames("SELECT name FROM user");
+        return getNames("SELECT name FROM appuser");
     }
 
     OptionalInt getUserIdForName(String name) {
-        return getIdForName(name, "SELECT id FROM user WHERE name = :name");
+        return getIdForName(name, "SELECT id FROM appuser WHERE name = :name");
     }
 
-    List<String> getCityNamesForUser(int userId) {
+    List<String> getCityNamesForUser(int appuserId) {
         String sqlString = "SELECT city.name AS city_name " +
-                "FROM user, city, user_city " +
-                "WHERE user.id = " + userId + " " +
-                "AND user.id = user_city.user_id " +
-                "AND city.id = user_city.city_id";
+                "FROM appuser, city, appuser_city " +
+                "WHERE appuser.id = " + appuserId + " " +
+                "AND appuser.id = appuser_city.appuser_id " +
+                "AND city.id = appuser_city.city_id";
         @SuppressWarnings("unchecked")
         List<Object> resultList = entityManager.createNativeQuery(sqlString).getResultList();
         return resultList.stream()
