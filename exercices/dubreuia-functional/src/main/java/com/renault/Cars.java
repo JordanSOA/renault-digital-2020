@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -15,19 +17,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class Cars {
 
     public static final int DEFAULT_MPG = 100;
-    public static final String PATH_CSV = "C:/Users/Workspace/Desktop/Coaching/Nouveau dossier/renault-digital-2020/exercices/dubreuia-functional/data/cars.csv";
-    private static List<Car> cars;
-
-    public static void main(String[] args) {
-        Stream<String> lines = null;
-        try {
-            lines = Files.lines(Paths.get(PATH_CSV), UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        cars = Cars.getCars(lines);
-        Optional<Integer> bmw = sumMpgForBrand(cars, "BMW");
-    }
+    
     /*
      * Retourne une liste de voiture à partir d'une liste d'un stream de lignes.
      *
@@ -60,8 +50,7 @@ public class Cars {
      * voir https://www.calculateme.com/gas-mileage/us-mpg-to-liters-per-100-km
      */
     public static Optional<Double> getLitersPer100Km(Car car) {
-        Integer mpg = Cars.getMpgOrDefault(car);
-        return Optional.of((100 * 3.785411784) / (1.609344 * mpg));
+        return car.getMpg().map(mpg -> (100 * 3.785411784) / (1.609344 * mpg));
     }
 
     /*
@@ -69,15 +58,10 @@ public class Cars {
      */
     public static Optional<Integer> sumMpgForBrand(List<Car> cars, String brand) {
         Stream<Car> stream = cars.stream().filter(car -> brand.equalsIgnoreCase(car.brand));
-        List<Optional<Integer>> optionalStream = stream.map(car -> car.getMpg()).collect(Collectors.toList());
-       int op = 0;
-        for (Optional<Integer> integer : optionalStream) {
-            op += integer.orElse(DEFAULT_MPG);
-        }
-
-        System.out.println(op);
-
-        return null;
+        Optional<Integer> reduce = stream.map(car -> car.getMpg())
+            .map(mpg -> mpg.orElse(0))
+            .reduce((acc, cur) -> acc + cur);
+        return reduce;
     }
 
     /*
@@ -91,16 +75,14 @@ public class Cars {
      * Retourne une map avec comme clefs les années, comme valeur la liste des voitures pour l'année correspondante.
      */
     public static Map<Integer, List<Car>> getCarsPerYear(List<Car> cars) {
-        // TODO implement
-        return Collections.emptyMap();
+        return cars.stream().collect(Collectors.groupingBy(Car::getYear));
     }
 
     /*
      * Retourne une map avec comme clefs les années, comme valeur le compte des voitures pour cette année.
      */
     public static Map<Integer, Long> getCarsCountPerYear(List<Car> cars) {
-        // TODO implement
-        return Collections.emptyMap();
+        return cars.stream().collect(Collectors.groupingBy(Car::getYear, Collectors.counting()));
     }
 
     /**

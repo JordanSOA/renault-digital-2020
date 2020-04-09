@@ -78,7 +78,6 @@ public class CarsTest {
     }
 
     @Test
-    @Disabled
     public void getCarsPerYear() {
         Map<Integer, List<Car>> perYear = Cars.getCarsPerYear(cars);
         assertEquals(16, perYear.size());
@@ -92,7 +91,6 @@ public class CarsTest {
     }
 
     @Test
-    @Disabled
     public void getCarsCountPerYear() {
         Map<Integer, Long> carsCountPerYear = Cars.getCarsCountPerYear(cars);
 
