@@ -5,7 +5,7 @@ var app = express()
 app.use(session({
     secret: 'super-secret-key-for-signing-the-cookie-id',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: true
 }))
 
 app.use(function (req, res, next) {
@@ -14,13 +14,16 @@ app.use(function (req, res, next) {
     // et d'incrémentation...
     if (!req.session.count) {
         // TODO utiliser req.session.count pour initialiser un compteur
+        req.session.count = 0;
     }
+    req.session.count += 1;
     // TODO incrementer le compteur
-    next()
+    next();
 })
 
 app.get('/', function (req, res) {
     // TODO imprimer "vous avez vu cette page x fois" avec x etant le compteur
+    res.send("vous avez vu cette page "+ req.session.count +" fois");
 })
 
 app.listen(3000, () => {
